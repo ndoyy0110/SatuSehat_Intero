@@ -9,6 +9,16 @@ let tokenExpiresAt = null;
 async function getAccessToken() {
   const now = Date.now();
 
+  if (
+    !process.env.AUTH_URL ||
+    !process.env.CLIENT_ID ||
+    !process.env.CLIENT_SECRET
+  ) {
+    throw new Error(
+      "Missing environment variables: AUTH_URL, CLIENT_ID, and CLIENT_SECRET must be set.",
+    );
+  }
+
   // Gunakan cached token jika masih valid (buffer 60 detik)
   if (cachedToken && tokenExpiresAt && now < tokenExpiresAt - 60000) {
     console.log("✅ [Auth] Menggunakan cached token");
@@ -42,9 +52,13 @@ async function getAccessToken() {
     if (error.response) {
       const status = error.response.status;
       if (status === 401) {
-        throw new Error("401 Unauthorized — CLIENT_ID atau CLIENT_SECRET salah.");
+        throw new Error(
+          "401 Unauthorized — CLIENT_ID atau CLIENT_SECRET salah.",
+        );
       }
-      throw new Error(`HTTP ${status} — ${JSON.stringify(error.response.data)}`);
+      throw new Error(
+        `HTTP ${status} — ${JSON.stringify(error.response.data)}`,
+      );
     }
     throw new Error(`Network error: ${error.message}`);
   }

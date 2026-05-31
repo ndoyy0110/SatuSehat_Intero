@@ -11,6 +11,13 @@ Step 3: POST Location (Ruang Poli Umum)
 Step 4: POST Encounter (status: arrived, class: AMB)
 ```
 
+## Endpoint Token
+
+Token OAuth2 bisa diambil lewat:
+
+- `GET /api/token`
+- `POST /api/token`
+
 ## Prasyarat
 
 - Node.js v18+
@@ -63,17 +70,17 @@ satusehat-patient-registration/
 
 ## NIK Dummy (Sandbox)
 
-| Role         | NIK              |
-|--------------|------------------|
-| Pasien       | 1000000000000001 |
-| Dokter       | 1000000000000002 |
-| Organisasi   | 10000004 (static)|
+| Role       | NIK               |
+| ---------- | ----------------- |
+| Pasien     | 1000000000000001  |
+| Dokter     | 1000000000000002  |
+| Organisasi | 10000004 (static) |
 
 ## Error Handling
 
-| HTTP Code | Keterangan                                      |
-|-----------|-------------------------------------------------|
-| 401       | Token tidak valid / CLIENT_ID/SECRET salah      |
-| 404       | NIK tidak ditemukan di SATUSEHAT                |
-| 422       | Payload FHIR tidak valid                        |
-| Network   | Koneksi timeout atau DNS gagal                  |
+| HTTP Code | Keterangan                                 |
+| --------- | ------------------------------------------ |
+| 401       | Token tidak valid / CLIENT_ID/SECRET salah |
+| 404       | NIK tidak ditemukan di SATUSEHAT           |
+| 422       | Payload FHIR tidak valid                   |
+| Network   | Koneksi timeout atau DNS gagal             |

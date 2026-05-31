@@ -4,19 +4,19 @@
 const express = require("express");
 const router = express.Router();
 
-const { getAccessToken }                  = require("../auth");
+const { getAccessToken } = require("../auth");
 const { getPatientIHS, getPractitionerIHS } = require("../masterData");
-const { createLocation }                  = require("../location");
-const { createEncounter }                 = require("../encounter");
+const { createLocation } = require("../location");
+const { createEncounter } = require("../encounter");
 
-const PATIENT_NIK      = "1000000000000001";
+const PATIENT_NIK = "1000000000000001";
 const PRACTITIONER_NIK = "1000000000000002";
 
 // ─────────────────────────────────────────────────────────────
 // GET /api/token
 // Test koneksi OAuth2 — ambil access token saja
 // ─────────────────────────────────────────────────────────────
-router.get("/token", async (req, res) => {
+async function handleTokenRequest(req, res) {
   try {
     const token = await getAccessToken();
     res.json({
@@ -27,7 +27,10 @@ router.get("/token", async (req, res) => {
   } catch (error) {
     res.status(401).json({ success: false, message: error.message });
   }
-});
+}
+
+router.get("/token", handleTokenRequest);
+router.post("/token", handleTokenRequest);
 
 // ─────────────────────────────────────────────────────────────
 // GET /api/patient/:nik
@@ -43,9 +46,11 @@ router.get("/patient/:nik", async (req, res) => {
       ihs_number: ihsNumber,
     });
   } catch (error) {
-    const statusCode = error.message.includes("404") ? 404
-                     : error.message.includes("401") ? 401
-                     : 500;
+    const statusCode = error.message.includes("404")
+      ? 404
+      : error.message.includes("401")
+        ? 401
+        : 500;
     res.status(statusCode).json({ success: false, message: error.message });
   }
 });
@@ -64,9 +69,11 @@ router.get("/practitioner/:nik", async (req, res) => {
       ihs_number: ihsNumber,
     });
   } catch (error) {
-    const statusCode = error.message.includes("404") ? 404
-                     : error.message.includes("401") ? 401
-                     : 500;
+    const statusCode = error.message.includes("404")
+      ? 404
+      : error.message.includes("401")
+        ? 401
+        : 500;
     res.status(statusCode).json({ success: false, message: error.message });
   }
 });
@@ -83,7 +90,7 @@ router.post("/register-patient", async (req, res) => {
     const token = await getAccessToken();
 
     // Step 2: IHS Numbers
-    const patientIHS      = await getPatientIHS(token, PATIENT_NIK);
+    const patientIHS = await getPatientIHS(token, PATIENT_NIK);
     const practitionerIHS = await getPractitionerIHS(token, PRACTITIONER_NIK);
 
     // Step 3: Location
@@ -95,7 +102,7 @@ router.post("/register-patient", async (req, res) => {
       patientIHS,
       practitionerIHS,
       locationId,
-      organizationId
+      organizationId,
     );
 
     // Response 201 Created
@@ -103,22 +110,25 @@ router.post("/register-patient", async (req, res) => {
       success: true,
       message: "Pendaftaran pasien berhasil",
       data: {
-        patient_ihs:      patientIHS,
+        patient_ihs: patientIHS,
         practitioner_ihs: practitionerIHS,
-        organization_id:  organizationId,
-        location_id:      locationId,
-        encounter_id:     encounter.id,
+        organization_id: organizationId,
+        location_id: locationId,
+        encounter_id: encounter.id,
         encounter_status: encounter.status,
-        encounter_class:  encounter.class?.code,
-        timestamp:        encounter.period?.start,
-        encounter:        encounter,
+        encounter_class: encounter.class?.code,
+        timestamp: encounter.period?.start,
+        encounter: encounter,
       },
     });
   } catch (error) {
-    const statusCode = error.message.includes("401") ? 401
-                     : error.message.includes("404") ? 404
-                     : error.message.includes("422") ? 422
-                     : 500;
+    const statusCode = error.message.includes("401")
+      ? 401
+      : error.message.includes("404")
+        ? 404
+        : error.message.includes("422")
+          ? 422
+          : 500;
     res.status(statusCode).json({ success: false, message: error.message });
   }
 });

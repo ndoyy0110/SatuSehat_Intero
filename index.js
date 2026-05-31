@@ -14,8 +14,9 @@ app.get("/", (req, res) => {
     message: "SATUSEHAT Patient Registration API",
     endpoints: {
       registerPatient: "POST /api/register-patient",
-      getToken:        "GET  /api/token",
-      getPatient:      "GET  /api/patient/:nik",
+      getToken: "GET  /api/token",
+      postToken: "POST /api/token",
+      getPatient: "GET  /api/patient/:nik",
       getPractitioner: "GET  /api/practitioner/:nik",
     },
   });
@@ -28,6 +29,7 @@ app.listen(PORT, () => {
   console.log(`   GET  http://localhost:${PORT}/`);
   console.log(`   POST http://localhost:${PORT}/api/register-patient`);
   console.log(`   GET  http://localhost:${PORT}/api/token`);
+  console.log(`   POST http://localhost:${PORT}/api/token`);
   console.log(`   GET  http://localhost:${PORT}/api/patient/:nik`);
   console.log(`   GET  http://localhost:${PORT}/api/practitioner/:nik`);
 });
