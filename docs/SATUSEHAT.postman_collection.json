@@ -1,0 +1,132 @@
+{
+  "info": {
+    "_postman_id": "d4d1d5d0-1db5-4c70-8d5a-8e3a9f3f7a11",
+    "name": "SATUSEHAT Patient Registration",
+    "description": "Collection for the SATUSEHAT patient registration flow: token, master data lookup, and full register-patient execution.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Step 1 - Get Access Token",
+      "item": [
+        {
+          "name": "GET Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "description": "Requests a cached or fresh OAuth2 access token from the backend."
+          }
+        },
+        {
+          "name": "POST Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "description": "POST variant for token generation as required by the assignment."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Step 2 - Lookup Master Data",
+      "item": [
+        {
+          "name": "Lookup Patient IHS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/patient/1000000000000001",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patient",
+                "1000000000000001"
+              ]
+            },
+            "description": "Finds the patient's IHS number using the dummy NIK from the assignment."
+          }
+        },
+        {
+          "name": "Lookup Practitioner IHS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/practitioner/1000000000000002",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "practitioner",
+                "1000000000000002"
+              ]
+            },
+            "description": "Finds the practitioner's IHS number using the dummy NIK from the assignment."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Step 3-4 - Register Patient",
+      "item": [
+        {
+          "name": "Register Patient Flow",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/register-patient",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "register-patient"
+              ]
+            },
+            "description": "Runs the full flow: token, master data lookup, Location creation, and Encounter creation."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ]
+}

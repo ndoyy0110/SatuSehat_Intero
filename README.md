@@ -18,6 +18,16 @@ Token OAuth2 bisa diambil lewat:
 - `GET /api/token`
 - `POST /api/token`
 
+## Dokumentasi API
+
+File export Postman ada di [docs/SATUSEHAT.postman_collection.json](docs/SATUSEHAT.postman_collection.json). Isinya mencakup:
+
+- Step 1: ambil access token
+- Step 2: lookup IHS Pasien dan Dokter
+- Step 3-4: jalankan pendaftaran pasien lengkap lewat `POST /api/register-patient`
+
+Kalau ingin impor cepat, set environment variable `baseUrl` ke `http://localhost:3000`.
+
 ## Prasyarat
 
 - Node.js v18+
@@ -53,6 +63,14 @@ ORGANIZATION_ID=10000004
 ```bash
 npm start
 ```
+
+Endpoint utama yang biasa dipakai saat testing:
+
+- `GET /` untuk health check
+- `GET /api/token` atau `POST /api/token` untuk akses token
+- `GET /api/patient/:nik` untuk lookup IHS pasien
+- `GET /api/practitioner/:nik` untuk lookup IHS dokter
+- `POST /api/register-patient` untuk alur lengkap Step 1 sampai 4
 
 ## Struktur Project
 
